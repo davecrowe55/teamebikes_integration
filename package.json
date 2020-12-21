@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "https://github.com/davecrowe55/teamebikes_integration.git",
   "author": "d4cro <33950559+davecrowe55@users.noreply.github.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
