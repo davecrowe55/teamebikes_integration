@@ -13,6 +13,7 @@ app.use(express.json());
 
 app.use("/route", route);
 
+
 const PORT = 3000;
 
 const refreshTokenStore = {};
@@ -181,16 +182,19 @@ const getContact = async (accessToken) => {
     };
     console.log('===> Replace the following request.get() to test other API calls');
     console.log('===> request.get(\'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?count=1\')');
-    const result = await request.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all?count=1', {
+    //I need to find a way for this get all contactsfrom the actual ebike app - it is rejecting the api in the env $ at this stage
+    const result = await request.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all?', {
       headers: headers
     });
 
-    return JSON.parse(result).contacts[0];
+    return JSON.parse(result).contacts[1];
   } catch (e) {
     console.error('  > Unable to retrieve contact');
     return JSON.parse(e.response.body);
   }
 };
+
+
 
 //========================================//
 //   Displaying information to the user   //
