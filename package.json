@@ -6,6 +6,7 @@
   "author": "d4cro <33950559+davecrowe55@users.noreply.github.com>",
   "license": "MIT",
   "dependencies": {
+    "ajax-request": "^1.2.3",
     "axios": "^0.21.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
