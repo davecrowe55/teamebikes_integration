@@ -20,6 +20,8 @@ const PORT = 3000;
 const refreshTokenStore = {};
 const accessTokenCache = new NodeCache({ deleteOnExpire: true });
 
+
+
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
     throw new Error('Missing CLIENT_ID or CLIENT_SECRET environment variable.')
 }
@@ -36,7 +38,8 @@ if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
 // or set them as environment variables before running.
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-
+const API_KEY = process.env.API_KEY;
+const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 // Scopes for this app will default to `contacts`
 // To request others, set the SCOPE environment variable instead
 let SCOPES = ['contacts'];
@@ -184,11 +187,11 @@ const getContact = async (accessToken) => {
     console.log('===> Replace the following request.get() to test other API calls');
     console.log('===> request.get(\'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?count=1\')');
     //I need to find a way for this get all contactsfrom the actual ebike app - it is rejecting the api in the env $ at this stage
-    const result = await request.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all?', {
+    const result = await request.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all?count=1', {
       headers: headers
     });
 
-    return JSON.parse(result).contacts[1];
+    return JSON.parse(result).contacts[0];
   } catch (e) {
     console.error('  > Unable to retrieve contact');
     return JSON.parse(e.response.body);
@@ -232,5 +235,7 @@ app.get('/error', (req, res) => {
 
 app.listen(PORT, () => console.log(`=== Starting your app on http://localhost:${PORT} ===`));
 opn(`http://localhost:${PORT}`);
+
+
 
 module.exports = app;
