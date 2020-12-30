@@ -175,23 +175,21 @@ const isAuthorized = (userId) => {
 //====================================================//
 //   Using an Access Token to Query the HubSpot API   //
 //====================================================//
-//get contacts
+// get contacts //
 const getContact = async (accessToken) => {
   console.log('');
   console.log('=== Retrieving a contact from HubSpot using the access token ===');
   try {
-    const headers = {
+    let headers = {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json'
     };
-    console.log('===> Replace the following request.get() to test other API calls');
-    console.log('===> request.get(\'https://api.hubapi.com/contacts/v1/lists/all/contacts/all?count=1\')');
-    //https://api.hubapi.com/crm/v3/objects/contacts/all - returns error Error Message: Object not found. objectId are usually numeric.
-    const result = await request.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all', {
+    console.log('===> request.get(\'https://api.hubapi.com/contacts/v1/lists/all/contacts/all\')');
+    let result = await request.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all', {
       headers: headers
     });
     
-    return JSON.parse(result).contacts[1];
+    return JSON.parse(result).contacts[2];
     ;
   } catch (e) {
     console.error('  > Unable to retrieve contact');
@@ -199,22 +197,22 @@ const getContact = async (accessToken) => {
   }
 };
 
-//get deals ////////////
+// get deals //
 const getDeals = async (accessToken) => {
   console.log('');
   console.log('=== Retrieving deals from HubSpot using the access token ===');
   try {
-    const headers = {
+    let headers = {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json'
     };
     console.log('===> request.get(\'https://api.hubapi.com/crm/v3/objects/deals/all\')');
-    //https://api.hubapi.com/crm/v3/objects/contacts/all - returns error Error Message: Object not found. objectId are usually numeric.
-    const result = await request.get('https://api.hubapi.com/deals/v1/deal/paged', {
+    //Currently returnoing undefined //Above api returns Object not found. objectId are usually numeric.
+    let result = await request.get('https://api.hubapi.com/deals/v1/deal/paged', {
       headers: headers
     });
+    return JSON.parse(result).deals[1];
     
-    return JSON.parse(result).deals[0];
   } catch (e) {
     console.error('  > Unable to retrieve deals');
     return JSON.parse(e.response.body);
@@ -233,7 +231,8 @@ const displayContactName = (res, contact) => {
     return;
   }
   const { firstname, lastname } = contact.properties;
-  res.write(`<p>Contact name: ${firstname.value} ${lastname.value}</p>`);
+  console.log(contact.properties);
+  res.write(`<p>Contact name: ${firstname.value} ${lastname.value} </p>`);
 };
 //Display deals
 const displayDeals = (res, deal) => {
@@ -241,8 +240,9 @@ const displayDeals = (res, deal) => {
     res.write(`<p>Unable to retrieve the deals! Error Message: ${deal.message}</p>`);
     return;
   }
-  const { dealname } = deal.properties;
-  res.write(`<p>Deal information: ${dealname} </p>`);
+  const { timestamp } = deal.properties;
+  console.log(deal.properties);
+  res.write(`<p>Deal information: ${timestamp} </p>`);
 };
 
 app.get('/', async (req, res) => {
