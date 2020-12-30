@@ -175,7 +175,7 @@ const isAuthorized = (userId) => {
 //====================================================//
 //   Using an Access Token to Query the HubSpot API   //
 //====================================================//
-
+//get contacts
 const getContact = async (accessToken) => {
   console.log('');
   console.log('=== Retrieving a contact from HubSpot using the access token ===');
@@ -190,10 +190,33 @@ const getContact = async (accessToken) => {
     const result = await request.get('https://api.hubapi.com/contacts/v1/lists/all/contacts/all', {
       headers: headers
     });
-
-    return JSON.parse(result).contacts[2];
+    
+    return JSON.parse(result).contacts[1];
+    ;
   } catch (e) {
     console.error('  > Unable to retrieve contact');
+    return JSON.parse(e.response.body);
+  }
+};
+
+//get deals ////////////
+const getDeals = async (accessToken) => {
+  console.log('');
+  console.log('=== Retrieving deals from HubSpot using the access token ===');
+  try {
+    const headers = {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    };
+    console.log('===> request.get(\'https://api.hubapi.com/crm/v3/objects/deals/all\')');
+    //https://api.hubapi.com/crm/v3/objects/contacts/all - returns error Error Message: Object not found. objectId are usually numeric.
+    const result = await request.get('https://api.hubapi.com/deals/v1/deal/paged', {
+      headers: headers
+    });
+    
+    return JSON.parse(result).deals[0];
+  } catch (e) {
+    console.error('  > Unable to retrieve deals');
     return JSON.parse(e.response.body);
   }
 };
@@ -203,7 +226,7 @@ const getContact = async (accessToken) => {
 //========================================//
 //   Displaying information to the user   //
 //========================================//
-
+//Display contacts
 const displayContactName = (res, contact) => {
   if (contact.status === 'error') {
     res.write(`<p>Unable to retrieve contact! Error Message: ${contact.message}</p>`);
@@ -212,6 +235,15 @@ const displayContactName = (res, contact) => {
   const { firstname, lastname } = contact.properties;
   res.write(`<p>Contact name: ${firstname.value} ${lastname.value}</p>`);
 };
+//Display deals
+const displayDeals = (res, deal) => {
+  if (deal.status === 'error') {
+    res.write(`<p>Unable to retrieve the deals! Error Message: ${deal.message}</p>`);
+    return;
+  }
+  const { dealname } = deal.properties;
+  res.write(`<p>Deal information: ${dealname} </p>`);
+};
 
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
@@ -219,8 +251,10 @@ app.get('/', async (req, res) => {
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
+    const deal = await getDeals(accessToken);
     res.write(`<h4>Access token: ${accessToken}</h4>`);
     displayContactName(res, contact);
+    displayDeals(res, deal);
   } else {
     res.write(`<a href="/install"><h3>Install the app</h3></a>`);
   }
