@@ -196,6 +196,32 @@ const getContact = async (accessToken) => {
     return JSON.parse(e.response.body);
   }
 };
+// post contacts with timeline API
+app.post('/post-test', async (req, res) => {
+  if (isAuthorized(req.sessionID)) {
+    let accessToken = await getAccessToken(req.sessionID);
+    let headers = {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    };
+    let body = {
+      "eventTemplateID": "1010887",
+      "firstname": "test",
+      "tokens": { 
+        "testTokenContacts": req.body.firstname
+      }
+  };
+  let event = 'https://api.hubapi.com/integrators/timeline/v3/events';
+  try{
+    let resp = await axios.post(event, body, { headers });
+    res.send('thanks that worked!');
+  }catch(err){
+    console.error(err);
+  }
+  } else {
+    res.render("home", {authUrl });
+  }
+});
 
 // get deals //
 const getDeals = async (accessToken) => {
@@ -208,10 +234,10 @@ const getDeals = async (accessToken) => {
     };
     console.log('===> request.get(\'https://api.hubapi.com/crm/v3/objects/deals/all\')');
     //Currently returnoing undefined //Above api returns Object not found. objectId are usually numeric.
-    let result = await request.get('https://api.hubapi.com/deals/v1/deal/paged', {
+    let result = await request.get('https://api.hubapi.com/crm/v3/objects/deals/all', {
       headers: headers
     });
-    return JSON.parse(result).deals[1];
+    return JSON.parse(result).deals[0];
     
   } catch (e) {
     console.error('  > Unable to retrieve deals');
