@@ -234,10 +234,10 @@ const getDeals = async (accessToken) => {
     };
     console.log('===> request.get(\'https://api.hubapi.com/crm/v3/objects/deals/all\')');
     //Currently returnoing undefined //Above api returns Object not found. objectId are usually numeric.
-    let result = await request.get('https://api.hubapi.com/crm/v3/objects/deals/all', {
+    let result = await request.get('https://api.hubapi.com/deals/v1/deal/paged', {
       headers: headers
     });
-    return JSON.parse(result).deals[0];
+    return JSON.parse(result).deals[1];
     
   } catch (e) {
     console.error('  > Unable to retrieve deals');
