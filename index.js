@@ -42,7 +42,7 @@ const API_KEY = process.env.API_KEY;
 const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 // Scopes for this app will default to `contacts`
 // To request others, set the SCOPE environment variable instead
-let SCOPES = ['contacts','e-commerce', 'integration-sync', 'oauth', 'timeline'];
+let SCOPES = ['contacts','e-commerce' ];
 if (process.env.SCOPE) {
     SCOPES = (process.env.SCOPE.split(/ |, ?|%20/)).join(' ');
 }
@@ -224,7 +224,7 @@ app.post('/post-test', async (req, res) => {
 });
 
 // get deals //
-const getDeals = async (accessToken) => {
+const getDeal = async (accessToken) => {
   console.log('');
   console.log('=== Retrieving deals from HubSpot using the access token ===');
   try {
@@ -232,12 +232,13 @@ const getDeals = async (accessToken) => {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json'
     };
-    console.log('===> request.get(\'https://api.hubapi.com/crm/v3/objects/deals/all\')');
-    //Currently returnoing undefined //Above api returns Object not found. objectId are usually numeric.
+    console.log('===> request.get(\'https://api.hubapi.com/deals/v1/deal/paged\')');
+    //Currently returnoing undefined //Above api is the correct one but breaks code. objectId are usually numeric. Works in insomnia
     let result = await request.get('https://api.hubapi.com/deals/v1/deal/paged', {
       headers: headers
     });
-    return JSON.parse(result).deals[1];
+     console.log(result);
+    return JSON.parse(result).deals[0];
     
   } catch (e) {
     console.error('  > Unable to retrieve deals');
@@ -261,7 +262,7 @@ const displayContactName = (res, contact) => {
   res.write(`<p>Contact name: ${firstname.value} ${lastname.value} </p>`);
 };
 //Display deals
-const displayDeals = (res, deal) => {
+const displayDeal = (res, deal) => {
   if (deal.status === 'error') {
     res.write(`<p>Unable to retrieve the deals! Error Message: ${deal.message}</p>`);
     return;
@@ -277,10 +278,10 @@ app.get('/', async (req, res) => {
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
-    const deal = await getDeals(accessToken);
+    const deal = await getDeal(accessToken);
     res.write(`<h4>Access token: ${accessToken}</h4>`);
     displayContactName(res, contact);
-    displayDeals(res, deal);
+    displayDeal(res, deal);
   } else {
     res.write(`<a href="/install"><h3>Install the app</h3></a>`);
   }
