@@ -232,13 +232,12 @@ const getDeal = async (accessToken) => {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json'
     };
-    console.log('===> request.get(\'https://api.hubapi.com/deals/v1/deal/paged\')');
-    //Currently returnoing undefined //Above api is the correct one but breaks code. objectId are usually numeric. Works in insomnia
-    let result = await request.get('https://api.hubapi.com/deals/v1/deal/paged', {
+    console.log('===> request.get(\'https://api.hubapi.com/crm/v3/objects/deals)');
+    let result = await request.get('https://api.hubapi.com/crm/v3/objects/deals/', {
       headers: headers
     });
      console.log(result);
-    return JSON.parse(result).deals[0];
+    return JSON.parse(result).results[0];
     
   } catch (e) {
     console.error('  > Unable to retrieve deals');
@@ -267,9 +266,9 @@ const displayDeal = (res, deal) => {
     res.write(`<p>Unable to retrieve the deals! Error Message: ${deal.message}</p>`);
     return;
   }
-  const { timestamp } = deal.properties;
+  const { dealname, amount } = deal.properties;
   console.log(deal.properties);
-  res.write(`<p>Deal information: ${timestamp} </p>`);
+  res.write(`<p>Deal information: ${dealname} ${amount} </p>`);
 };
 
 app.get('/', async (req, res) => {
