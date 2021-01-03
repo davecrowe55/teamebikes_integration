@@ -42,7 +42,7 @@ const API_KEY = process.env.API_KEY;
 const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 // Scopes for this app will default to `contacts`
 // To request others, set the SCOPE environment variable instead
-let SCOPES = ['contacts'];
+let SCOPES = ['contacts','e-commerce', 'integration-sync', 'oauth', 'timeline'];
 if (process.env.SCOPE) {
     SCOPES = (process.env.SCOPE.split(/ |, ?|%20/)).join(' ');
 }
@@ -68,8 +68,8 @@ app.use(session({
 // to when they choose to install the app
 const authUrl = 'https://app.hubspot.com/oauth/authorize' +
 `?client_id=9ba67b99-04c4-409d-9a14-07e9aff6a95b` +
-`&scope=contacts` +
-`&redirect_uri=http://localhost:3000/oauth-callback`;
+`&redirect_uri=http://localhost:3000/oauth-callback&scope=contacts%20e-commerce`;
+
   // 'https://app.hubspot.com/oauth/authorize' +
   // `?client_id=${encodeURIComponent(CLIENT_ID)}` + // app's client ID
   // `&scope=${encodeURIComponent(SCOPES)}` + // scopes being requested by the app
