@@ -15,6 +15,8 @@ app.use(express.json());
 app.use("/route", route);
 
 
+
+
 const PORT = 3000;
 
 const refreshTokenStore = {};
@@ -197,32 +199,34 @@ const getContact = async (accessToken) => {
   }
 };
 // post contacts with timeline API
-app.post('/post-test', async (req, res) => {
-  if (isAuthorized(req.sessionID)) {
-    let accessToken = await getAccessToken(req.sessionID);
-    let headers = {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    };
-    let body = {
-      "eventTemplateID": "1010887",
-      "firstname": "test",
-      "tokens": { 
-        "testTokenContacts": req.body.firstname
-      }
-  };
-  let event = 'https://api.hubapi.com/integrators/timeline/v3/events';
-  try{
-    let resp = await axios.post(event, body, { headers });
-    res.send('thanks that worked!');
-  }catch(err){
-    console.error(err);
-  }
-  } else {
-    res.render("home", {authUrl });
-  }
-});
+let postTest = require("request");
 
+var options = {
+  method: 'POST',
+  url: 'https://api.hubapi.com/crm/v3/objects/contacts',
+  headers: {
+    accept: 'application/json',
+    'content-type': 'application/json',
+    authorization: 'Bearer CJaHh-7sLhIDAQECGKyuowQg7OqFBijprg4yGQCc-dhwU_mlqAxjW5ySbzL3SFU-qNaP0hs6GgAKAkEAAAyAA_gLAAAAAQAAAAAAAAAYwAATQhkAnPnYcJN-YOa36fH-a-4bA31fnvJFASxX '
+  },
+  body: {
+    properties: {
+      company: 'BBBBBiglytics',
+      email: 'bcooper@biglytics.net',
+      firstname: 'Bryan',
+      lastname: 'Cooper',
+      phone: '(877) 929-0687',
+      website: 'biglytics.net'
+    }
+  },
+  json: true
+};
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
 // get deals //
 const getDeal = async (accessToken) => {
   console.log('');
@@ -236,7 +240,6 @@ const getDeal = async (accessToken) => {
     let result = await request.get('https://api.hubapi.com/crm/v3/objects/deals/', {
       headers: headers
     });
-     console.log(result);
     return JSON.parse(result).results[0];
     
   } catch (e) {
