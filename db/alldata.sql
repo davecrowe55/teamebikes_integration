@@ -1,0 +1,4 @@
+CREATE TABLE payload
+(
+	id SERIAL PRIMARY KEY
+);
