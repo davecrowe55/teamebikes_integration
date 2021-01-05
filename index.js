@@ -198,34 +198,23 @@ const getContact = async (accessToken) => {
     return JSON.parse(e.response.body);
   }
 };
-// post contacts with timeline API
-let postTest = require("request");
-
-var options = {
-  method: 'POST',
-  url: 'https://api.hubapi.com/crm/v3/objects/contacts',
-  headers: {
-    accept: 'application/json',
-    'content-type': 'application/json',
-    authorization: 'Bearer CJaHh-7sLhIDAQECGKyuowQg7OqFBijprg4yGQCc-dhwU_mlqAxjW5ySbzL3SFU-qNaP0hs6GgAKAkEAAAyAA_gLAAAAAQAAAAAAAAAYwAATQhkAnPnYcJN-YOa36fH-a-4bA31fnvJFASxX '
-  },
-  body: {
-    properties: {
-      company: 'BBBBBiglytics',
-      email: 'bcooper@biglytics.net',
-      firstname: 'Bryan',
-      lastname: 'Cooper',
-      phone: '(877) 929-0687',
-      website: 'biglytics.net'
+// post contacts with vend inventory update webhook
+app.post("/", async (req, res) => {
+  try { const vendWebHook = req.url[`https://ebiketeam.vendhq.com/api/webhooks/`]
+        const { payload } = req.body;
+    if (
+      payload === undefined
+    ) {
+      return res.status(400).send("Bad request - missing parameters");
     }
-  },
-  json: true
-};
+    //create new inventory update
+    createInventoryUpdate(vendWebHook ,payload);
+    res.status(201).json("OK - list was updated");
 
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
-
-  console.log(body);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).end();
+  }
 });
 // get deals //
 const getDeal = async (accessToken) => {
