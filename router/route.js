@@ -4,11 +4,11 @@ const app = express();
 const axios = require('axios');
 //Returns a list of orders ordered by the most recent
 
-//Need to extract payload from vend webhook
+//Need to extract payload from vend webhook and post it to hubspot?
 app.post("/", async (req, res) => {
-  try { const { id } = req.body[`https://ebiketeam.vendhq.com/api/webhooks/`];
+  try { const vendWebHook = req.body[`https://ebiketeam.vendhq.com/api/webhooks/`];
   console.log(req.body);
-        // const { id } = req.body;
+        const { id } = req.body;
     if (
       id === undefined
     ) {
