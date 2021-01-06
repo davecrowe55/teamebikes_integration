@@ -43,6 +43,7 @@ const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const API_KEY = process.env.API_KEY;
 const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
+const PIPEDREAM_TOKEN = process.env.PIPEDREAM_TOKEN;
 // Scopes for this app will default to `contacts`
 // To request others, set the SCOPE environment variable instead
 let SCOPES = ['contacts','e-commerce' ];
@@ -199,24 +200,7 @@ const getContact = async (accessToken) => {
     return JSON.parse(e.response.body);
   }
 };
-// post contacts with vend inventory update webhook
-app.post("/", async (req, res) => {
-  try { const vendWebHook = req.url[`https://ebiketeam.vendhq.com/api/webhooks/`]
-        const { payload } = req.body;
-    if (
-      payload === undefined
-    ) {
-      return res.status(400).send("Bad request - missing parameters");
-    }
-    //create new inventory update
-    createInventoryUpdate(vendWebHook ,payload);
-    res.status(201).json("OK - list was updated");
 
-  } catch (error) {
-    console.log(error);
-    return res.status(500).end();
-  }
-});
 // get deals //
 const getDeal = async (accessToken) => {
   console.log('');
@@ -232,6 +216,27 @@ const getDeal = async (accessToken) => {
     });
     return JSON.parse(result).results[0];
     
+  } catch (e) {
+    console.error('  > Unable to retrieve deals');
+    return JSON.parse(e.response.body);
+  }
+};
+
+// get vend web hook payload
+const getPageInfo = async (accessToken) => {
+  //  console.log('');
+  console.log('=== Retrieving payload from Vend using the access token ===');
+  try {
+    let headers = {
+      Authorization: `Bearer ${accessToken}`,// Authorized by PIPEDREAM_TOKEN, difficulty getting correct access to env and to write payload :<
+      'Content-Type': 'application/json'
+    };
+    console.log('===> request.get(\'https://api.pipedream.com/v1/sources/dc_v3upnvA/event_summaries?expand=event)');
+    let result = await request.get('https://api.pipedream.com/v1/sources/dc_v3upnvA/event_summaries?expand=event', {
+      headers: headers
+    });
+      // console.log(result);
+    return JSON.parse(result).data[0];
   } catch (e) {
     console.error('  > Unable to retrieve deals');
     return JSON.parse(e.response.body);
@@ -263,7 +268,19 @@ const displayDeal = (res, deal) => {
   console.log(deal.properties);
   res.write(`<p>Deal information: ${dealname} ${amount} </p>`);
 };
+// Display payLoad
+const displayPageInfo = (res, data) => {
+    //  console.log(data);
+  if (data.status === 'error') {
+    res.write(`<p>Unable to retrieve the deals! Error Message: ${data.message}</p>`);
+    return;
+  }
+    // const { id } = data.properties;
+   console.log(data);
+  res.write(`<p>pageinfo information: ${ data }  </p>`);
+};
 
+//Display data
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.write(`<h2>HubSpot OAuth 2.0 Quickstart App</h2>`);
@@ -271,9 +288,11 @@ app.get('/', async (req, res) => {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
     const deal = await getDeal(accessToken);
+    const pageInfor = await getPageInfo(accessToken);
     res.write(`<h4>Access token: ${accessToken}</h4>`);
     displayContactName(res, contact);
     displayDeal(res, deal);
+    displayPageInfo(res, pageInfor);
   } else {
     res.write(`<a href="/install"><h3>Install the app</h3></a>`);
   }
