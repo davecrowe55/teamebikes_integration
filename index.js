@@ -219,13 +219,33 @@ const getDeal = async (accessToken) => {
   }
 };
 
+//get hub db table
+const getHubdb = async (accessToken) => {
+  console.log('');
+  console.log('=== Retrieving deals from HubSpot using the access token ===');
+  try {
+    let headers = {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json'
+    };
+    console.log('===> request.get(\'https://api.hubapi.com/cms/v3/hubdb/tables?)');
+    let result = await request.get('https://api.hubapi.com/cms/v3/hubdb/tables?', {
+      headers: headers
+    });
+    return JSON.parse(result).results[0];
+    
+  } catch (e) {
+    console.error('  > Unable to retrieve deals');
+    return JSON.parse(e.response.body);
+  }
+};
 // get vend web hook payload
 const getPageInfo = async (accessToken) => {
   //  console.log('');
   console.log('=== Retrieving payload from Vend using the access token ===');
   try {
     let headers = {
-      Authorization: `Bearer ${accessToken}`,// Authorized by PIPEDREAM_TOKEN, difficulty getting correct access to env and to write payload :<
+      Authorization: `Bearer ${PIPEDREAM_TOKEN}`,// Authorized by PIPEDREAM_TOKEN, difficulty getting correct access to env and to write payload :<
       'Content-Type': 'application/json'
     };
     console.log('===> request.get(\'https://api.pipedream.com/v1/sources/dc_v3upnvA/event_summaries?expand=event)');
@@ -265,6 +285,16 @@ const displayDeal = (res, deal) => {
   console.log(deal.properties);
   res.write(`<p>Deal information: ${dealname} ${amount} </p>`);
 };
+//Display hubdb
+const displayHubdb = (res, db) => {
+  if (db.status === 'error') {
+    res.write(`<p>Unable to retrieve the deals! Error Message: ${db.message}</p>`);
+    return;
+  }
+  
+  console.log(db);
+  res.write(`<p>db information: ${db}  </p>`);
+};
 // Display payLoad
 const displayPageInfo = (res, data) => {
     //  console.log(data);
@@ -285,10 +315,12 @@ app.get('/', async (req, res) => {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
     const deal = await getDeal(accessToken);
-    const pageInfor = await getPageInfo(accessToken);
+    const db = await getHubdb(accessToken); //Auth issues doesn't allow public api display?
+    const pageInfor = await getPageInfo(accessToken); //Auth issues coming from pipedream, different auth, when coming straight from webhook should work?
     res.write(`<h4>Access token: ${accessToken}</h4>`);
     displayContactName(res, contact);
     displayDeal(res, deal);
+    displayHubdb(res, db);
     displayPageInfo(res, pageInfor);
   } else {
     res.write(`<a href="/install"><h3>Install the app</h3></a>`);
