@@ -46,7 +46,7 @@ const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 const PIPEDREAM_TOKEN = process.env.PIPEDREAM_TOKEN;
 // Scopes for this app will default to `contacts`
 // To request others, set the SCOPE environment variable instead
-let SCOPES = ['contacts','e-commerce' ];
+let SCOPES = ['contacts','e-commerce', 'hubdb' ];
 if (process.env.SCOPE) {
     SCOPES = (process.env.SCOPE.split(/ |, ?|%20/)).join(' ');
 }
@@ -72,12 +72,9 @@ app.use(session({
 // to when they choose to install the app
 const authUrl = 'https://app.hubspot.com/oauth/authorize' +
 `?client_id=9ba67b99-04c4-409d-9a14-07e9aff6a95b` +
-`&redirect_uri=http://localhost:3000/oauth-callback&scope=contacts%20e-commerce`;
+`&redirect_uri=http://localhost:3000/oauth-callback&scope=contacts%20hubdb%20e-commerce`;
 
-  // 'https://app.hubspot.com/oauth/authorize' +
-  // `?client_id=${encodeURIComponent(CLIENT_ID)}` + // app's client ID
-  // `&scope=${encodeURIComponent(SCOPES)}` + // scopes being requested by the app
-  // `&redirect_uri=${encodeURIComponent(REDIRECT_URI)}`; // where to send the user after the consent page
+
 
 // Redirect the user from the installation page to
 // the authorization URL
