@@ -23,7 +23,7 @@ const PORT = process.env.PORT;
 const refreshTokenStore = {};
 const accessTokenCache = new NodeCache({ deleteOnExpire: true });
 
-
+<button onClick="handleSignIn()">LOGIN </button>
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
     throw new Error('Missing CLIENT_ID or CLIENT_SECRET environment variable.')
