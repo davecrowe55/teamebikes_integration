@@ -52,7 +52,7 @@ if (process.env.SCOPE) {
 }
 
 // On successful install, users will be redirected to /oauth-callback
-const REDIRECT_URI = `http://localhost:3000/oauth-callback`;
+const REDIRECT_URI = `https://localhost:3000/oauth-callback`;
 
 //===========================================================================//
 
@@ -310,7 +310,7 @@ const displayPageInfo = (res, data) => {
 //Display data
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
-  res.write(`<h2> DAVID'S heroku test HubSpot OAuth 2.0 Quickstart App</h2>`);
+  res.write(`<h2> DAVID'S heroku testHubSpot OAuth 2.0 Quickstart App</h2>`);
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
