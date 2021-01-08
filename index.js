@@ -6,7 +6,7 @@ const session = require('express-session');
 const opn = require('open');
 const axios = require('axios');
 const ajax = ('ajax-request');
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 const app = express();
 const route = require("./router/route");
 

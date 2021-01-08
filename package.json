@@ -8,6 +8,9 @@
   "scripts": {
     "start": "node index.js"
   },
+  "engines": {
+    "node": "6.14.4"
+  },
   "dependencies": {
     "ajax-request": "^1.2.3",
     "axios": "^0.21.0",
