@@ -9,7 +9,8 @@
     "start": "node index.js"
   },
   "engines": {
-    "node": "6.14.4"
+    "npm": "6.14.4",
+    "node": "v12.16.3."
   },
   "dependencies": {
     "ajax-request": "^1.2.3",
