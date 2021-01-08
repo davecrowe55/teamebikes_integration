@@ -10,7 +10,7 @@
   },
   "engines": {
     "npm": "^6.14.4",
-    "node": "^12.16.3."
+    "node": ">=12.16.3."
   },
   "dependencies": {
     "ajax-request": "^1.2.3",
