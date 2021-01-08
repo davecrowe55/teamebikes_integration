@@ -310,7 +310,7 @@ const displayPageInfo = (res, data) => {
 //Display data
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
-  res.write(`<h2> DAVID'S heroku testHubSpot OAuth 2.0 Quickstart App <button onClick="handleSignIn()">LOGIN </button></h2>`);
+  res.write( <button onClick="handleSignIn()">LOGIN </button>);
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
