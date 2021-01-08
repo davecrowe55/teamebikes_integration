@@ -18,7 +18,7 @@ app.use("/route", route);
 
 
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 const refreshTokenStore = {};
 const accessTokenCache = new NodeCache({ deleteOnExpire: true });
