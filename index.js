@@ -53,11 +53,11 @@ if (process.env.SCOPE) {
 }
 
 // On successful install, users will be redirected to /oauth-callback
-const REDIRECT_URI = `https://localhost:3000/oauth-callback`;
+const REDIRECT_URI = `http://localhost:3000/oauth-callback`;
 
 //===========================================================================//
 
-// Use a session to keep track of client ID 
+// Use a session to keep track of client ID
 app.use(session({
   secret: Math.random().toString(36).substring(2),
   resave: false,
@@ -312,7 +312,7 @@ const displayPageInfo = (res, data) => {
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  login button test;`);
-  res.write(`<h2> DAVID'S heroku testHubSpot OAuth 2.0 Quickstart App  login button test ;`);
+  res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  login button test ;`);
   // res.render(<button onClick="handleSignIn()">LOGIN </button>);
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
