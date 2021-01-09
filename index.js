@@ -9,13 +9,13 @@ const ajax = ('ajax-request');
 // const bodyParser = require('body-parser');
 const app = express();
 const route = require("./router/route");
-const firebase = require("firebase.ejs");
+// const firebase = require("firebase.ejs");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/route", route);
-app.use(firebase);
+// app.use(firebase);
 
 
 const PORT = process.env.PORT;
