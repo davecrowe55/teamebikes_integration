@@ -6,16 +6,15 @@ const session = require('express-session');
 const opn = require('open');
 const axios = require('axios');
 const ajax = ('ajax-request');
-// const bodyParser = require('body-parser');
 const app = express();
 const route = require("./router/route");
-// const firebase = require("firebase.ejs");
+
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/route", route);
-// app.use(firebase);
+
 
 
 const PORT = process.env.PORT;
