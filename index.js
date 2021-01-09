@@ -23,7 +23,6 @@ const PORT = process.env.PORT;
 const refreshTokenStore = {};
 const accessTokenCache = new NodeCache({ deleteOnExpire: true });
 
-<button onClick="handleSignIn()">LOGIN </button>
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
     throw new Error('Missing CLIENT_ID or CLIENT_SECRET environment variable.')
@@ -310,7 +309,8 @@ const displayPageInfo = (res, data) => {
 //Display data
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
-  res.write( <button onClick="handleSignIn()">LOGIN </button>);
+  res.write(`<h2> DAVID'S heroku testHubSpot OAuth 2.0 Quickstart App  login button test</h2>`);
+  res.render(<button onClick="handleSignIn()">LOGIN </button>);
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
