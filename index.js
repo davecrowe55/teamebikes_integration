@@ -321,7 +321,7 @@ app.get('/', async (req, res) => {
     const db = await getHubdb(accessToken); //Auth issues doesn't allow public api display?
     const pageInfor = await getPageInfo(accessToken); //Auth issues coming from pipedream, different auth, when coming straight from webhook should work???
     res.write(`<h4>Access token: ${accessToken}</h4>`);
-    displayContactName(res, contact, <h1>dog</h1>);
+    displayContactName(res, contact);
     displayDeal(res, deal);
     displayHubdb(res, db);
     displayPageInfo(res, pageInfor);
