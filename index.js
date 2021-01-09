@@ -313,7 +313,6 @@ const displayPageInfo = (res, data) => {
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  login button test</h2> <h1>dog</h1>;`);
-  <h1>dog</h1>;
   // res.render(<button onClick="handleSignIn()">LOGIN </button>);
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
