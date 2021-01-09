@@ -9,17 +9,22 @@ const ajax = ('ajax-request');
 // const bodyParser = require('body-parser');
 const app = express();
 const route = require("./router/route");
+const firebase = require("firebase.ejs");
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/route", route);
+app.use(firebase);
 
 
 const PORT = process.env.PORT;
 
+
 const refreshTokenStore = {};
 const accessTokenCache = new NodeCache({ deleteOnExpire: true });
+
+
 
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
@@ -307,7 +312,8 @@ const displayPageInfo = (res, data) => {
 //Display data
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
-  res.write(`<h2> DAVID'S heroku testHubSpot OAuth 2.0 Quickstart App  login button test</h2>`);
+  res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  login button test</h2> <h1>dog</h1>;`);
+  <h1>dog</h1>;
   // res.render(<button onClick="handleSignIn()">LOGIN </button>);
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
@@ -316,7 +322,7 @@ app.get('/', async (req, res) => {
     const db = await getHubdb(accessToken); //Auth issues doesn't allow public api display?
     const pageInfor = await getPageInfo(accessToken); //Auth issues coming from pipedream, different auth, when coming straight from webhook should work???
     res.write(`<h4>Access token: ${accessToken}</h4>`);
-    displayContactName(res, contact);
+    displayContactName(res, contact, <h1>dog</h1>);
     displayDeal(res, deal);
     displayHubdb(res, db);
     displayPageInfo(res, pageInfor);
@@ -338,3 +344,4 @@ opn(`http://localhost:${PORT}`);
 
 
 module.exports = app;
+
