@@ -57,6 +57,11 @@ function getposts(){
     return firebase.database().ref("posts").once('value').then(function(snapshot) {
         let posts = snapshot.val();
         console.log(posts);
-        // ...
+       
+
+        for(let postKey in posts) {
+            let post = posts[postKey];
+            $("#post-listing").append("<div>"+post.title+" - "+post.body+"</div>");
+        }
       });    
 };
