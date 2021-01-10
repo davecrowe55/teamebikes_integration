@@ -8,17 +8,6 @@ const axios = require('axios');
 const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
-const firebase = require("firebase/app");
-const pool = require('pg');
-const admin = require("firebase-admin");
-
-let serviceAccount = require("path/to/serviceAccountKey.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://ebikes-integration-app-default-rtdb.firebaseio.com"
-});
-
 
 
 app.use(express.urlencoded({ extended: false }));
@@ -29,19 +18,6 @@ app.use("/route", route);
 
 
 const PORT = process.env.PORT;
-const firebaseConfig = {
-  apiKey: "<%= process.env.FIREBASE_API_KEY %>",
-  authDomain: "ebikes-integration-app.firebaseapp.com",
-  databaseURL: "https://ebikes-integration-app-default-rtdb.firebaseio.com",
-  projectId: "ebikes-integration-app",
-  storageBucket: "ebikes-integration-app.appspot.com",
-  messagingSenderId: "1099339972008",
-  appId: "<%= process.env.FIREBASE_APP_ID %>",
-  measurementId: "G-NV31PNDE5D"
-};
-
-firebase.initializeApp(firebaseConfig);
-
 
 
 const refreshTokenStore = {};
@@ -366,6 +342,4 @@ opn(`http://localhost:${PORT}`);
 
 
 module.exports = app;
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
