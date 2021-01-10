@@ -8,6 +8,7 @@ const axios = require('axios');
 const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
+const pool = require('pg');
 
 
 app.use(express.urlencoded({ extended: false }));
