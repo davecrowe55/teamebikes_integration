@@ -73,7 +73,7 @@ app.use(session({
 // to when they choose to install the app
 const authUrl = 'https://app.hubspot.com/oauth/authorize' +
 `?client_id=9ba67b99-04c4-409d-9a14-07e9aff6a95b` +
-`&redirect_uri=https://arcane-dusk-21666.herokuapp.com/&scope=contacts%20hubdb%20e-commerce`;
+`&redirect_uri=https://arcane-dusk-21666.herokuapp.com&scope=contacts%20hubdb%20e-commerce`;
 
 
 // Redirect the user from the installation page to
