@@ -53,7 +53,7 @@ if (process.env.SCOPE) {
 }
 
 // On successful install, users will be redirected to /oauth-callback
-const REDIRECT_URI = `https://git.heroku.com/arcane-dusk-21666.git`;
+const REDIRECT_URI = `http://localhost:3000/oauth-callback`;
 
 //===========================================================================//
 
@@ -73,8 +73,7 @@ app.use(session({
 // to when they choose to install the app
 const authUrl = 'https://app.hubspot.com/oauth/authorize' +
 `?client_id=9ba67b99-04c4-409d-9a14-07e9aff6a95b` +
-`&redirect_uri=https://git.heroku.com/arcane-dusk-21666.git&scope=contacts%20hubdb%20e-commerce`;
-
+`&redirect_uri=http://localhost:3000/oauth-callback&scope=contacts%20hubdb%20e-commerce`;
 
 
 // Redirect the user from the installation page to
