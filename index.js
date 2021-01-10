@@ -10,6 +10,15 @@ const app = express();
 const route = require("./router/route");
 const firebase = require("firebase/app");
 const pool = require('pg');
+const admin = require("firebase-admin");
+
+let serviceAccount = require("path/to/serviceAccountKey.json");
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://ebikes-integration-app-default-rtdb.firebaseio.com"
+});
+
 
 
 app.use(express.urlencoded({ extended: false }));
