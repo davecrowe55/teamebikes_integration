@@ -8,6 +8,7 @@ const axios = require('axios');
 const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
+const apiRoute = require("./router/apiRouter");
 // app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
 // app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
 
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
 app.use("/route", route); 
+app.use("/apiRouter", route); 
 
 
 
