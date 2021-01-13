@@ -1,3 +1,4 @@
+#syntax = <frontend image>, e.g. # syntax = docker/dockerfile:1.0-experimental
 FROM node:14
 WORKDIR /app
 COPY . /app
