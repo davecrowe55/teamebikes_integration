@@ -3,5 +3,5 @@ FROM node:14
 WORKDIR /app
 COPY . /app
 RUN ["npm", "install"]
-EXPOSE 5000
+EXPOSE 8080
 ENTRYPOINT ["npm", "run", "start:dev"]
