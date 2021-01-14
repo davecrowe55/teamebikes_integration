@@ -313,9 +313,9 @@ const displayPageInfo = (res, data) => {
 
 //Display data
 app.get('/', async (req, res) => {
-  res.setHeader('Content-Type', 'text/html','<button onClick="handleSignIn()">LOGIN </button>');
-  res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  login button test;`);
-  res.write(`<button onClick="handleSignIn()">LOGIN </button>`);
+  res.setHeader('Content-Type', 'text/html','<button onClick="handleSignIn()">LOGIN22 </button>');
+  res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  login button test;<button onClick="handleSignIn()">LOGIN </button>`);
+  res.write(`<button onClick="handleSignIn()">LOGIN11 </button>`);
   // res.render(<button onClick="handleSignIn()">LOGIN </button>);
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
