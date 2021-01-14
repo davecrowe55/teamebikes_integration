@@ -5,14 +5,14 @@ const axios = require('axios');
 //Returns a list of orders ordered by the most recent
 
 //Test button route
-app.get('/', async (req, res) => {
-  res.setHeader('Content-Type', 'text/html');
-  res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth XXXX.0 Quickstart App  login button test;`);
-  res.write("<input type='button' id='butTest' value='Login Database' onclick='location.href=\"route.js");
-  // res.render(<button onClick="handleSignIn()">LOGIN </button>);onClick="handleSignIn()">LOGI
+// app.get('/', async (req, res) => {
+//   res.setHeader('Content-Type', 'text/html');
+//   res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth XXXX.0 Quickstart App  login button test;`);
+//   res.write("<input type='button' id='butTest' value='Login Database' onclick='location.href=\"route.js");
+//   // res.render(<button onClick="handleSignIn()">LOGIN </button>);onClick="handleSignIn()">LOGI
  
-  res.end();
-});
+//   res.end();
+// });
 //Need to extract payload from vend webhook and post it to hubspot?
 app.post("/", async (req, res) => {
   try { const vendWebHook = req.body[`https://ebiketeam.vendhq.com/api/webhooks/`];
