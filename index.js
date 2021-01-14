@@ -313,7 +313,7 @@ const displayPageInfo = (res, data) => {
 
 //Display data
 app.get('/', async (req, res) => {
-  res.setHeader('Content-Type', 'text/html');
+  res.setHeader('Content-Type', 'text/html','<button onClick="handleSignIn()">LOGIN </button>');
   res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  login button test;`);
   res.write(`<button onClick="handleSignIn()">LOGIN </button>`);
   // res.render(<button onClick="handleSignIn()">LOGIN </button>);
