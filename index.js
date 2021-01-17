@@ -9,6 +9,7 @@ const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
 const apiRoute = require("./router/apiRouter");
+const provider = new firebase.auth.GoogleAuthProvider();
 const firebase = require('firebase');
 // const firebaseui = require('firebaseui');
 app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
@@ -21,7 +22,7 @@ app.use(express.json());
 app.use("/route", route); 
 app.use("/apiRouter", route); 
 
-const firebaseApps = firebase.initializeApp({
+firebase.initializeApp({
   apiKey: process.env.FIREBASE_API_KEY,
   authDomain: "ebike-integrate.firebaseapp.com",
   databaseURL: "https://ebike-integrate-default-rtdb.firebaseio.com",
@@ -31,8 +32,7 @@ const firebaseApps = firebase.initializeApp({
   appId: process.env.FIREBASE_API_ID,
   measurementId: "G-ZSHZ6X7HFZ"
 });
-// Initialize Firebase
-firebaseApps.initializeApp(firebaseConfig);
+
 
 const PORT = process.env.PORT;
 
