@@ -9,8 +9,10 @@ const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
 const apiRoute = require("./router/apiRouter");
-// app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
-// app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
+const firebase = require('firebase');
+const firebaseui = require('firebaseui');
+app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
+app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
 
 
 app.use(express.urlencoded({ extended: false }));
@@ -23,6 +25,72 @@ app.use("/apiRouter", route);
 
 
 const PORT = process.env.PORT;
+
+
+
+function handleSignIn() {
+  let provider = new firebase.auth.GoogleAuthProvider();
+
+  firebase.auth()
+.signInWithPopup(provider)
+.then((result) => {
+  /** @type {firebase.auth.OAuthCredential} */
+  let credential = result.credential;
+
+  
+  let token = credential.accessToken;
+  
+  let user = result.user;
+  console.log(user.email);
+}).catch((error) => {
+  
+  let errorCode = error.code;
+  let errorMessage = error.message;
+  
+  let email = error.email;
+  
+  let credential = error.credential;
+  
+});
+}
+function addMessage(postTitle, postBody){
+  let postData = {
+      title: postTitle,
+      body: postBody
+  }
+  var database = firebase.database().ref("posts");
+
+  var newPostRef = database.push();
+  newPostRef.set(postData, (error) => {
+      if (error) {
+      } else {
+        
+        window.location.reload();
+      }
+    });
+  }
+
+function handleMessageFormSubmit(){
+  let postTitle = $('#post-title').val();
+  let postBody = $('#post-body').val();
+  console.log(postTitle);
+  addMessage(postTitle, postBody);
+};
+
+function getposts(){
+
+  return firebase.database().ref("posts").once('value').then(function(snapshot) {
+      let posts = snapshot.val();
+      console.log(posts);
+     
+
+      for(let postKey in posts) {
+          let post = posts[postKey];
+          $("#post-listing").append("<div>"+post.title+" - "+post.body+"</div>");
+      }
+    });    
+};
+
 
 
 const refreshTokenStore = {};
@@ -314,8 +382,8 @@ const displayPageInfo = (res, data) => {
 //Display data
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
-  res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  <input type="button" onclick="location.href='https://google.com';" value="Go to Google" />`);
-  res.write(`<button onClick="handleSignIn()">LOGIN11 </button>`);
+  res.write(`<h2> DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  `);
+  res.write(`<button onClick="handleSignIn()">LOGIN11 </button> , <input type="button" onclick="location.href='https://google.com';" value="Go to Google" />`);
  
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
