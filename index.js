@@ -10,7 +10,7 @@ const app = express();
 const route = require("./router/route");
 const apiRoute = require("./router/apiRouter");
 const firebase = require('firebase');
-const firebaseui = require('firebaseui');
+// const firebaseui = require('firebaseui');
 app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
 app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
 
@@ -21,82 +21,24 @@ app.use(express.json());
 app.use("/route", route); 
 app.use("/apiRouter", route); 
 
-
-
+const firebaseApps = firebase.initializeApp({
+  apiKey: process.env.FIREBASE_API_KEY,
+  authDomain: "ebike-integrate.firebaseapp.com",
+  databaseURL: "https://ebike-integrate-default-rtdb.firebaseio.com",
+  projectId: "ebike-integrate",
+  storageBucket: "ebike-integrate.appspot.com",
+  messagingSenderId: process.env.FIREBASE_SENDER_ID,
+  appId: process.env.FIREBASE_API_ID,
+  measurementId: "G-ZSHZ6X7HFZ"
+});
+// Initialize Firebase
+firebaseApps.initializeApp(firebaseConfig);
 
 const PORT = process.env.PORT;
 
 
-
-function handleSignIn() {
-  let provider = new firebase.auth.GoogleAuthProvider();
-
-  firebase.auth()
-.signInWithPopup(provider)
-.then((result) => {
-  /** @type {firebase.auth.OAuthCredential} */
-  let credential = result.credential;
-
-  
-  let token = credential.accessToken;
-  
-  let user = result.user;
-  console.log(user.email);
-}).catch((error) => {
-  
-  let errorCode = error.code;
-  let errorMessage = error.message;
-  
-  let email = error.email;
-  
-  let credential = error.credential;
-  
-});
-}
-function addMessage(postTitle, postBody){
-  let postData = {
-      title: postTitle,
-      body: postBody
-  }
-  var database = firebase.database().ref("posts");
-
-  var newPostRef = database.push();
-  newPostRef.set(postData, (error) => {
-      if (error) {
-      } else {
-        
-        window.location.reload();
-      }
-    });
-  }
-
-function handleMessageFormSubmit(){
-  let postTitle = $('#post-title').val();
-  let postBody = $('#post-body').val();
-  console.log(postTitle);
-  addMessage(postTitle, postBody);
-};
-
-function getposts(){
-
-  return firebase.database().ref("posts").once('value').then(function(snapshot) {
-      let posts = snapshot.val();
-      console.log(posts);
-     
-
-      for(let postKey in posts) {
-          let post = posts[postKey];
-          $("#post-listing").append("<div>"+post.title+" - "+post.body+"</div>");
-      }
-    });    
-};
-
-
-
 const refreshTokenStore = {};
 const accessTokenCache = new NodeCache({ deleteOnExpire: true });
-
-
 
 
 if (!process.env.CLIENT_ID || !process.env.CLIENT_SECRET) {
