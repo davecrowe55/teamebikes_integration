@@ -10,9 +10,11 @@
     <button onclick="handleSignIn()" id="demo">Click me Bitch!</button>
   </body>
 <script src="/__/firebase/8.2.2/firebase-app.js"></script>
+firebase.initializeApp(environment.firebase);
 var provider = new firebase.auth.GoogleAuthProvider();
 <script src="/__/firebase/8.2.2/firebase-analytics.js"></script>
 <script src="/__/firebase/init.js"></script>
+<script src="firebase.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js"></script> -->
 <script>
@@ -29,10 +31,12 @@ var provider = new firebase.auth.GoogleAuthProvider();
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
   firebase.analytics();
-</script>
+</script> -->
 <script src="index.js"></script>
+<script src="google-signin.js"></script>
   <script src="index.ejs"></script>
   <script src="main.js"></script>
+  <script src="google-signin.js"></script>
 <script>
 function handleSignIn() {
     let provider = new firebase.auth.GoogleAuthProvider();

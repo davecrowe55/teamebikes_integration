@@ -9,11 +9,11 @@ const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
 const apiRoute = require("./router/apiRouter");
-const provider = new firebase.auth.GoogleAuthProvider();
+
 const firebase = require('firebase');
 // const firebaseui = require('firebaseui');
-app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
-app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
+// app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
+// app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
 
 
 app.use(express.urlencoded({ extended: false }));
@@ -22,13 +22,18 @@ app.use(express.json());
 app.use("/route", route); 
 app.use("/apiRouter", route); 
 
-firebase.auth().languageCode = 'it';
-// To apply the default browser preference instead of explicitly setting it.
-// firebase.auth().useDeviceLanguage();
-firebase.auth().signInWithRedirect(provider);
+PORT = process.env.PORT;
+// let firebaseConfig = {
+//   apiKey: "<%= process.env.FIREBASE_API_KEY %>",
+//   authDomain: "ebikes-integration-app.firebaseapp.com",
+//   databaseURL: "https://ebikes-integration-app-default-rtdb.firebaseio.com",
+//   projectId: "ebikes-integration-app",
+//   storageBucket: "ebikes-integration-app.appspot.com",
+//   messagingSenderId: "1099339972008",
+//   appId: "<%= process.env.FIREBASE_APP_ID %>",
+//   measurementId: "G-NV31PNDE5D"
+// };
 
-
-const PORT = process.env.PORT;
 
 
 const refreshTokenStore = {};
@@ -54,6 +59,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const API_KEY = process.env.API_KEY;
 const HUBSPOT_API_KEY = process.env.HUBSPOT_API_KEY;
 const PIPEDREAM_TOKEN = process.env.PIPEDREAM_TOKEN;
+
 // Scopes for this app will default to `contacts`
 // To request others, set the SCOPE environment variable instead
 let SCOPES = ['contacts','e-commerce', 'hubdb' ];
