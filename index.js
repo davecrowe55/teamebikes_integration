@@ -22,16 +22,10 @@ app.use(express.json());
 app.use("/route", route); 
 app.use("/apiRouter", route); 
 
-firebase.initializeApp({
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: "ebike-integrate.firebaseapp.com",
-  databaseURL: "https://ebike-integrate-default-rtdb.firebaseio.com",
-  projectId: "ebike-integrate",
-  storageBucket: "ebike-integrate.appspot.com",
-  messagingSenderId: process.env.FIREBASE_SENDER_ID,
-  appId: process.env.FIREBASE_API_ID,
-  measurementId: "G-ZSHZ6X7HFZ"
-});
+firebase.auth().languageCode = 'it';
+// To apply the default browser preference instead of explicitly setting it.
+// firebase.auth().useDeviceLanguage();
+firebase.auth().signInWithRedirect(provider);
 
 
 const PORT = process.env.PORT;
