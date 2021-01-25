@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -29,39 +29,39 @@ var provider = new firebase.auth.GoogleAuthProvider();
     measurementId: "G-ZSHZ6X7HFZ"
   };
   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
-</script> -->
-<script src="index.js"></script>
-<script src="google-signin.js"></script>
-  <script src="index.ejs"></script>
-  <script src="main.js"></script>
-  <script src="google-signin.js"></script>
-<script>
-function handleSignIn() {
-    let provider = new firebase.auth.GoogleAuthProvider();
+//   firebase.initializeApp(firebaseConfig);
+//   firebase.analytics();
+// </script> -->
+// <script src="index.js"></script>
+// <script src="google-signin.js"></script>
+//   <script src="index.ejs"></script>
+//   <script src="main.js"></script>
+//   <script src="google-signin.js"></script>
+// <script>
+// function handleSignIn() {
+//     let provider = new firebase.auth.GoogleAuthProvider();
 
-    firebase.auth()
-  .signInWithPopup(provider)
-  .then((result) => {
-    /** @type {firebase.auth.OAuthCredential} */
-    let credential = result.credential;
+//     firebase.auth()
+//   .signInWithPopup(provider)
+//   .then((result) => {
+//     /** @type {firebase.auth.OAuthCredential} */
+//     let credential = result.credential;
 
     
-    let token = credential.accessToken;
+//     let token = credential.accessToken;
     
-    let user = result.user;
-    console.log(user.email);
-  }).catch((error) => {
+//     let user = result.user;
+//     console.log(user.email);
+//   }).catch((error) => {
     
-    let errorCode = error.code;
-    let errorMessage = error.message;
+//     let errorCode = error.code;
+//     let errorMessage = error.message;
     
-    let email = error.email;
+//     let email = error.email;
     
-    let credential = error.credential;
+//     let credential = error.credential;
     
-  });
-}
-</script>
-</html>
+//   });
+// }
+// </script>
+// </html> 

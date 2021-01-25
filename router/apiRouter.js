@@ -1,20 +1,20 @@
-require('dotenv').config();
-const express = require('express');
-const request = require('request-promise-native');
-const NodeCache = require('node-cache');
-const session = require('express-session');
-const opn = require('open');
-const axios = require('axios');
-const ajax = ('ajax-request');
-const app = express();
-// const route = require("./router/route");
+// require('dotenv').config();
+// const express = require('express');
+// const request = require('request-promise-native');
+// const NodeCache = require('node-cache');
+// const session = require('express-session');
+// const opn = require('open');
+// const axios = require('axios');
+// const ajax = ('ajax-request');
+// const app = express();
+// // const route = require("./router/route");
 
-app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
-app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
+// app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
+// app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
 
 
-app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
+// app.use(express.urlencoded({ extended: false }));
+// app.use(express.json());
 
 // app.use("/route", route); 
 
