@@ -10,10 +10,6 @@ const app = express();
 const route = require("./router/route");
 const apiRoute = require("./router/apiRouter");
 
-// const firebase = require('firebase');
-// const firebaseui = require('firebaseui');
-// app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-app.js'));
-// app.use('/scripts', express.static(__dirname + 'https://www.gstatic.com/firebasejs/8.2.2/firebase-analytics.js'));
 
 
 // app.use(express.urlencoded({ extended: false }));
@@ -23,16 +19,6 @@ const apiRoute = require("./router/apiRouter");
 // app.use("/apiRouter", route); 
 
 PORT = process.env.PORT;
-// let firebaseConfig = {
-//   apiKey: "<%= process.env.FIREBASE_API_KEY %>",
-//   authDomain: "ebikes-integration-app.firebaseapp.com",
-//   databaseURL: "https://ebikes-integration-app-default-rtdb.firebaseio.com",
-//   projectId: "ebikes-integration-app",
-//   storageBucket: "ebikes-integration-app.appspot.com",
-//   messagingSenderId: "1099339972008",
-//   appId: "<%= process.env.FIREBASE_APP_ID %>",
-//   measurementId: "G-NV31PNDE5D"
-// };
 
 
 
