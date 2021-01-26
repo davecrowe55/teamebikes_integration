@@ -8,15 +8,15 @@ const axios = require('axios');
 const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
-const apiRoute = require("./router/apiRouter");
+const createNewListing = require("./createNewContact");
 
 
 
-// app.use(express.urlencoded({ extended: false }));
-// app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
-// app.use("/route", route); 
-// app.use("/apiRouter", route); 
+app.use("/route", route); 
+
 
 PORT = process.env.PORT;
 
@@ -197,6 +197,40 @@ const getContact = async (accessToken) => {
     return JSON.parse(e.response.body);
   }
 };
+
+// TEST POST ROUTE
+// Should refactor
+app.post("/", async (req, res) => {
+  try {
+    //console.log(req.user);
+    const payLoad = req.payload[`https://api.hubapi.com/contacts/v1/lists/all/contacts/all`]
+    const {firstname, lastname} = req.body;
+    console.log(payload)
+    if (
+      firstname === undefined ||
+      lastname === undefined
+    ) {
+      return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
+    }
+    // console.log(getUserIdByEmail)
+    
+    // create new payload
+    createNewContact(firstname, lastname);
+
+    res.status(201).json("OK - Hubspot was updated");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("GREAT success yes").end();
+  }
+});
+//test post route
+// app.post("/", async (req, res) => {
+//   try {
+//     return res.send("GREAT SUCCESS no");
+//   } catch (error) {
+//     console.error(error);
+//   }
+// });
 
 // get deals //
 const getDeal = async (accessToken) => {
