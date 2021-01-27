@@ -9,11 +9,13 @@ const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
 const createNewListing = require("./createNewContact");
-
-
+const bodyParser = require('body-parser');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}))
 
 app.use("/route", route); 
 
@@ -198,40 +200,6 @@ const getContact = async (accessToken) => {
   }
 };
 
-// TEST POST ROUTE
-// Should refactor
-app.post("/", async (req, res) => {
-  try {
-    //console.log(req.user);
-    const payLoad = req.payload[`https://api.hubapi.com/contacts/v1/lists/all/contacts/all`]
-    const {firstname, lastname} = req.body;
-    console.log(payload)
-    if (
-      firstname === undefined ||
-      lastname === undefined
-    ) {
-      return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
-    }
-    // console.log(getUserIdByEmail)
-    
-    // create new payload
-    createNewContact(firstname, lastname);
-
-    res.status(201).json("OK - Hubspot was updated");
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send("GREAT success yes").end();
-  }
-});
-//test post route
-// app.post("/", async (req, res) => {
-//   try {
-//     return res.send("GREAT SUCCESS no");
-//   } catch (error) {
-//     console.error(error);
-//   }
-// });
-
 // get deals //
 const getDeal = async (accessToken) => {
   console.log('');
@@ -253,26 +221,26 @@ const getDeal = async (accessToken) => {
   }
 };
 
-//get hub db table
-const getHubdb = async (accessToken) => {
-  console.log('');
-  console.log('=== Retrieving deals from HubSpot using the access token ===');
-  try {
-    let headers = {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json'
-    };
-    console.log('===> request.get(\'https://api.hubapi.com/cms/v3/hubdb/tables?)');
-    let result = await request.get('https://api.hubapi.com/cms/v3/hubdb/tables?', {
-      headers: headers
-    });
-    return JSON.parse(result).results[0];
+// //get hub db table
+// const getHubdb = async (accessToken) => {
+//   console.log('');
+//   console.log('=== Retrieving deals from HubSpot using the access token ===');
+//   try {
+//     let headers = {
+//       Authorization: `Bearer ${accessToken}`,
+//       'Content-Type': 'application/json'
+//     };
+//     console.log('===> request.get(\'https://api.hubapi.com/cms/v3/hubdb/tables?)');
+//     let result = await request.get('https://api.hubapi.com/cms/v3/hubdb/tables?', {
+//       headers: headers
+//     });
+//     return JSON.parse(result).results[0];
     
-  } catch (e) {
-    console.error('  > Unable to retrieve deals');
-    return JSON.parse(e.response.body);
-  }
-};
+//   } catch (e) {
+//     console.error('  > Unable to retrieve deals');
+//     return JSON.parse(e.response.body);
+//   }
+// };
 // get vend web hook payload
 const getPageInfo = async (accessToken) => {
   //  console.log('');
@@ -293,6 +261,28 @@ const getPageInfo = async (accessToken) => {
     return JSON.parse(e.response.body);
   }
 };
+
+// // TEST POST ROUTE
+// // Should refactor
+app.post("/", async (req, res) => {
+  try {
+    console.log(req.user);
+    const payLoad = req.params[`https://759827e72f05b9acbf7a0ec5acfd6b9c.m.pipedream.net`]
+    const {firstname} = req.body;
+    console.log(payLoad);
+    if (
+      firstname === undefined 
+    ) {
+      return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
+    }
+    createNewContact(firstname);
+    res.status(201).json("OK - Hubspot was updated with payload");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("No didn't work").end();
+  }
+});
+
 
 
 
@@ -319,16 +309,16 @@ const displayDeal = (res, deal) => {
   console.log(deal.properties);
   res.write(`<p>Deal information: ${dealname} ${amount} </p>`);
 };
-//Display hubdb
-const displayHubdb = (res, db) => {
-  if (db.status === 'error') {
-    res.write(`<p>Unable to retrieve the deals! Error Message: ${db.message}</p>`);
-    return;
-  }
+// //Display hubdb
+// const displayHubdb = (res, db) => {
+//   if (db.status === 'error') {
+//     res.write(`<p>Unable to retrieve the deals! Error Message: ${db.message}</p>`);
+//     return;
+//   }
   
-  console.log(db);
-  res.write(`<p>db information: ${db}  </p>`);
-};
+//   console.log(db);
+//   res.write(`<p>db information: ${db}  </p>`);
+// };
 // Display payLoad
 const displayPageInfo = (res, data) => {
     //  console.log(data);
@@ -351,12 +341,12 @@ app.get('/', async (req, res) => {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
     const deal = await getDeal(accessToken);
-    const db = await getHubdb(accessToken); //Auth issues doesn't allow public api display?
+    // const db = await getHubdb(accessToken); //Auth issues doesn't allow public api display?
     const pageInfor = await getPageInfo(accessToken); //Auth issues coming from pipedream, different auth, when coming straight from webhook should work???
     res.write(`<h4>Access token: ${accessToken}</h4>`);
     displayContactName(res, contact);
     displayDeal(res, deal);
-    displayHubdb(res, db);
+    // displayHubdb(res, db);
     displayPageInfo(res, pageInfor);
   } else {
     res.write(`<a href="/install"><h3>Install the app</h3></a>`);
