@@ -241,6 +241,8 @@ const getDeal = async (accessToken) => {
 //     return JSON.parse(e.response.body);
 //   }
 // };
+
+
 // get vend web hook payload
 const getPageInfo = async (accessToken) => {
   //  console.log('');
@@ -262,6 +264,14 @@ const getPageInfo = async (accessToken) => {
   }
 };
 
+//TEST POST ROUTE
+app.post("/", async (req, res) => {
+  try {
+    return res.send("GREAT SUCCESS IN index.js");
+  } catch (error) {
+    console.error(error);
+  }
+});
 // // TEST POST ROUTE
 // router.post("/hook", (req, res, next) => {
 //   processSomething(() => {

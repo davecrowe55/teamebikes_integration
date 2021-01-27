@@ -6,7 +6,7 @@ const app = express();
 //TEST POST ROUTE
 app.post("/", async (req, res) => {
   try {
-    return res.send("GREAT SUCCESS no");
+    return res.send("GREAT SUCCESS IN route.js");
   } catch (error) {
     console.error(error);
   }
