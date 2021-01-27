@@ -263,25 +263,43 @@ const getPageInfo = async (accessToken) => {
 };
 
 // // TEST POST ROUTE
+// router.post("/hook", (req, res, next) => {
+//   processSomething(() => {
+//     const webhookUrl = req.params.url;
+
+//     /**
+//      * Your Kafka action or something else. There
+//      * you should collect info about success or
+//      * fail of client's action.
+//      */
+
+//     /** 
+//      * Your API call to webhookUrl with 
+//      * your defined body about status of event
+//      */
+//   });
+
+//   res.status(200).send('OK')
+// });
 // // Should refactor
-app.post("/", async (req, res) => {
-  try {
-    console.log(req.user);
-    const payLoad = req.params[`https://759827e72f05b9acbf7a0ec5acfd6b9c.m.pipedream.net`]
-    const {firstname} = req.body;
-    console.log(payLoad);
-    if (
-      firstname === undefined 
-    ) {
-      return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
-    }
-    createNewContact(firstname);
-    res.status(201).json("OK - Hubspot was updated with payload");
-  } catch (error) {
-    console.log(error);
-    return res.status(500).send("No didn't work").end();
-  }
-});
+// app.post("/", async (req, res) => {
+//   try {
+//     console.log(req.user);
+//     const payLoad = req.params[`https://759827e72f05b9acbf7a0ec5acfd6b9c.m.pipedream.net`]
+//     const {firstname} = req.body;
+//     console.log(payLoad);
+//     if (
+//       firstname === undefined 
+//     ) {
+//       return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
+//     }
+//     createNewContact(firstname);
+//     res.status(201).json("OK - Hubspot was updated with payload");
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).send("No didn't work").end();
+//   }
+// });
 
 
 
