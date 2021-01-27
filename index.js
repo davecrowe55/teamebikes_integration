@@ -8,8 +8,8 @@ const axios = require('axios');
 const ajax = ('ajax-request');
 const app = express();
 const route = require("./router/route");
-const createNewListing = require("./createNewContact");
 const bodyParser = require('body-parser');
+
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -18,6 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}))
 
 app.use("/route", route); 
+
 
 
 PORT = process.env.PORT;
@@ -200,6 +201,23 @@ const getContact = async (accessToken) => {
   }
 };
 
+
+
+
+// Make an HTTP POST request using axios
+const resp =  axios({
+  method: "POST",
+  url: `https://jsonplaceholder.typicode.com/posts`,
+  data: {
+    name: "Luke",
+  }
+});
+
+// Retrieve just the data from the response
+const { data } = resp;
+
+  
+
 // get deals //
 const getDeal = async (accessToken) => {
   console.log('');
@@ -264,14 +282,31 @@ const getPageInfo = async (accessToken) => {
   }
 };
 
+  
+
 //TEST POST ROUTE
-app.post("/", async (req, res) => {
-  try {
-    return res.send("GREAT SUCCESS IN index.js");
-  } catch (error) {
-    console.error(error);
-  }
-});
+// app.post("/", async (req, res) => {
+//     try {
+//       //console.log(req.user);
+//       const payLoad = req.params[`https://arcane-dusk-21666.herokuapp.com/`]
+//       const { balance } = req.body;
+//       console.log(payload)
+//       if (
+//         balance === undefined
+        
+//       ) {
+//         return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
+//       }
+
+//       // create new payload
+//       createNewContact(firstname, lastname);
+  
+//       res.status(201).json("OK - Hubspot was updated");
+//     } catch (error) {
+//       console.log(error);
+//       return res.status(500).send("GREAT error").end();
+//     }
+//   });
 // // TEST POST ROUTE
 // router.post("/hook", (req, res, next) => {
 //   processSomething(() => {
