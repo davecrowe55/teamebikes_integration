@@ -201,22 +201,60 @@ const getContact = async (accessToken) => {
   }
 };
 
+app.post("/", async (req, res) => {
+   const propUpdate = 
+   { "properties": 
+      [ { property: 'email', value: 'testingapis@hubspot.com' },
+        { property: 'firstname', value: 'test' },
+        { property: 'lastname', value: 'testerson' },
+        { property: 'website', value: 'http://hubspot.com' },
+        { property: 'company', value: 'HubSpot' },
+        { property: 'phone', value: '555-122-2323' },
+        { property: 'address', value: '25 First Street' },
+        { property: 'city', value: 'Cambridge' },
+        { property: 'state', value: 'MA' },
+        { property: 'zip', value: '02139' } ] } 
 
-
-
-// Make an HTTP POST request using axios
-const resp =  axios({
-  method: "POST",
-  url: `https://jsonplaceholder.typicode.com/posts`,
-  data: {
-    name: "Luke",
+  const url = `https://api.hubapi.com/contacts/v1/lists/all/contacts/all/?hapikey=${process.env.API_KEY}`;
+  // const qs = 'process.env.API_KEY';
+  
+  try {
+    await axios.post(propUpdate, url);
+    return res.send("GREAT SUCCESS IN route.jsss");
+  } catch (error) {
+    console.error(error);
   }
 });
+// post contacts
+// var options = { method: 'POST',
+//   url: 'https://api.hubapi.com/contacts/v1/lists/all/contacts/all',
+//   qs: { hapikey: 'process.env.API_KEY' },
+//   headers: 
+//    { 
+//      'Content-Type': 'application/json' },
+//   body: 
+//    { properties: 
+//       [ { property: 'email', value: 'testingapis@hubspot.com' },
+//         { property: 'firstname', value: 'test' },
+//         { property: 'lastname', value: 'testerson' },
+//         { property: 'website', value: 'http://hubspot.com' },
+//         { property: 'company', value: 'HubSpot' },
+//         { property: 'phone', value: '555-122-2323' },
+//         { property: 'address', value: '25 First Street' },
+//         { property: 'city', value: 'Cambridge' },
+//         { property: 'state', value: 'MA' },
+//         { property: 'zip', value: '02139' } ] },
+//   json: true };
+// try {
+//   await axios.post(body);
+// } catch(error) {
+//   console.log(error);
+// }
+// request(options, function (error, response, body) {
+//   if (error) throw new Error(error);
 
-// Retrieve just the data from the response
-const { data } = resp;
-
-  
+//   console.log(body);
+// });
 
 // get deals //
 const getDeal = async (accessToken) => {
@@ -284,22 +322,20 @@ const getPageInfo = async (accessToken) => {
 
   
 
-//TEST POST ROUTE
+// TEST POST ROUTE
+
+
+      
+
 // app.post("/", async (req, res) => {
 //     try {
-//       //console.log(req.user);
-//       const payLoad = req.params[`https://arcane-dusk-21666.herokuapp.com/`]
-//       const { balance } = req.body;
-//       console.log(payload)
+//   let (result).data[0];
+      
 //       if (
-//         balance === undefined
-        
+//         email === null
 //       ) {
 //         return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
 //       }
-
-//       // create new payload
-//       createNewContact(firstname, lastname);
   
 //       res.status(201).json("OK - Hubspot was updated");
 //     } catch (error) {
@@ -307,44 +343,6 @@ const getPageInfo = async (accessToken) => {
 //       return res.status(500).send("GREAT error").end();
 //     }
 //   });
-// // TEST POST ROUTE
-// router.post("/hook", (req, res, next) => {
-//   processSomething(() => {
-//     const webhookUrl = req.params.url;
-
-//     /**
-//      * Your Kafka action or something else. There
-//      * you should collect info about success or
-//      * fail of client's action.
-//      */
-
-//     /** 
-//      * Your API call to webhookUrl with 
-//      * your defined body about status of event
-//      */
-//   });
-
-//   res.status(200).send('OK')
-// });
-// // Should refactor
-// app.post("/", async (req, res) => {
-//   try {
-//     console.log(req.user);
-//     const payLoad = req.params[`https://759827e72f05b9acbf7a0ec5acfd6b9c.m.pipedream.net`]
-//     const {firstname} = req.body;
-//     console.log(payLoad);
-//     if (
-//       firstname === undefined 
-//     ) {
-//       return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
-//     }
-//     createNewContact(firstname);
-//     res.status(201).json("OK - Hubspot was updated with payload");
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).send("No didn't work").end();
-//   }
-// });
 
 
 
