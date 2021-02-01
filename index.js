@@ -201,30 +201,33 @@ const getContact = async (accessToken) => {
   }
 };
 
-app.post("/", async (req, res) => {
-   const propUpdate = 
-   { "properties": 
-      [ { property: 'email', value: 'testingapis@hubspot.com' },
-        { property: 'firstname', value: 'test' },
-        { property: 'lastname', value: 'testerson' },
-        { property: 'website', value: 'http://hubspot.com' },
-        { property: 'company', value: 'HubSpot' },
-        { property: 'phone', value: '555-122-2323' },
-        { property: 'address', value: '25 First Street' },
-        { property: 'city', value: 'Cambridge' },
-        { property: 'state', value: 'MA' },
-        { property: 'zip', value: '02139' } ] } 
+const options = {
+  method: 'POST',
+      url: 'https://api.hubapi.com/crm/v3/objects/contacts',
+   headers: {
+  accept: 'application/json',
+ 'content-type': 'application/json',
+    authorization: 'Bearer CNP1kYn2LhIDAQkCGKyuowQg7OqFBijprg4yGQBMNteWebY9uekRIp6GUplQQ8JYJvv0gaQ6HAAKAkEAAAz4A_gLAAAAAQAAAAAAAAAYwAATwAdCGQBMNteWVhYR7qpZ5zlsi10e4uv9fSJwCFo '},
+    //How to cyhange auth or bearer token so its not expiring
+  body: {
+       properties: {
+      company: 'Riglytics',
+email: 'Rooper@Riglytics.net',
+      firstname: 'Rryan',
+lastname: 'Rooper',
+       phone: '(2877) 929-0687',
+      website: 'Riglytics.net'
+   }
+    },
+  json: true
+};
 
-  const url = `https://api.hubapi.com/contacts/v1/lists/all/contacts/all/?hapikey=${process.env.API_KEY}`;
-  // const qs = 'process.env.API_KEY';
-  
-  try {
-    await axios.post(propUpdate, url);
-    return res.send("GREAT SUCCESS IN route.jsss");
-  } catch (error) {
-    console.error(error);
-  }
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
 });
+
 // post contacts
 // var options = { method: 'POST',
 //   url: 'https://api.hubapi.com/contacts/v1/lists/all/contacts/all',
