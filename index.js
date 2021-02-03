@@ -200,64 +200,58 @@ const getContact = async (accessToken) => {
     return JSON.parse(e.response.body);
   }
 };
+//post route
 
-const options = {
-  method: 'POST',
-      url: 'https://api.hubapi.com/crm/v3/objects/contacts',
-   headers: {
-  accept: 'application/json',
- 'content-type': 'application/json',
-    authorization: 'Bearer CNP1kYn2LhIDAQkCGKyuowQg7OqFBijprg4yGQBMNteWebY9uekRIp6GUplQQ8JYJvv0gaQ6HAAKAkEAAAz4A_gLAAAAAQAAAAAAAAAYwAATwAdCGQBMNteWVhYR7qpZ5zlsi10e4uv9fSJwCFo '},
-    //How to cyhange auth or bearer token so its not expiring
-  body: {
-       properties: {
-      company: 'Riglytics',
-email: 'Rooper@Riglytics.net',
-      firstname: 'Rryan',
-lastname: 'Rooper',
-       phone: '(2877) 929-0687',
-      website: 'Riglytics.net'
-   }
-    },
-  json: true
-};
-
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
-
-  console.log(body);
+app.post("/", async (req, res) => {
+  
+  let headers = `Bearer ${accessToken}`;
+  const url = 'https://api.hubapi.com/crm/v3/objects/contacts';
+  const propUpdate = {
+    "properties": [ {
+      "firstname": "Anothertestname",
+      "lastname": "Anothertestlastname"
+    }
+    ]
+  }
+  const apiCall = `https://api.hubapi.com/contacts/v1/lists/all/contacts/all/?hapikey=${process.env.HUBSPOT_API_KEY}`;
+  try {
+    await axios.post(url, propUpdate);
+    // console.log(propUpdate, url);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
-// post contacts
-// var options = { method: 'POST',
-//   url: 'https://api.hubapi.com/contacts/v1/lists/all/contacts/all',
-//   qs: { hapikey: 'process.env.API_KEY' },
-//   headers: 
-//    { 
-//      'Content-Type': 'application/json' },
-//   body: 
-//    { properties: 
-//       [ { property: 'email', value: 'testingapis@hubspot.com' },
-//         { property: 'firstname', value: 'test' },
-//         { property: 'lastname', value: 'testerson' },
-//         { property: 'website', value: 'http://hubspot.com' },
-//         { property: 'company', value: 'HubSpot' },
-//         { property: 'phone', value: '555-122-2323' },
-//         { property: 'address', value: '25 First Street' },
-//         { property: 'city', value: 'Cambridge' },
-//         { property: 'state', value: 'MA' },
-//         { property: 'zip', value: '02139' } ] },
-//   json: true };
-// try {
-//   await axios.post(body);
-// } catch(error) {
-//   console.log(error);
-// }
+
+
+// const options = {
+//   method: 'POST',
+//       url: 'https://api.hubapi.com/crm/v3/objects/contacts',
+//    headers: {
+//   accept: 'application/json',
+//  'content-type': 'application/json',
+//     authorization: 'Bearer CNP1kYn2LhIDAQkCGKyuowQg7OqFBijprg4yGQBMNteWebY9uekRIp6GUplQQ8JYJvv0gaQ6HAAKAkEAAAz4A_gLAAAAAQAAAAAAAAAYwAATwAdCGQBMNteWVhYR7qpZ5zlsi10e4uv9fSJwCFo '},
+//     //How to change auth or bearer token so its not expiring
+//   body: {
+//        properties: {
+//       company: "Big",
+// email: 'ooper@Riglytics.net',
+//       firstname: `Wresult`,
+// lastname: 'ooper',
+//        phone: '(3877) 929-0687',
+//       website: 'iglytics.net'
+//    }
+//     },
+//   json: true
+// };
+
 // request(options, function (error, response, body) {
 //   if (error) throw new Error(error);
 
 //   console.log(body);
 // });
+
+
 
 // get deals //
 const getDeal = async (accessToken) => {
