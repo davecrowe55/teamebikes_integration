@@ -201,57 +201,31 @@ const getContact = async (accessToken) => {
   }
 };
 //post route
-
-app.post("/", async (req, res) => {
+//Error: Request failed with status code 400 with ${process.env.HUBSPOT.API_KEY}
+//Error: Request failed with status code 401 with ${process.env.API_KEY} - The API key used to make this call is expired.
+// TypeError [ERR_INVALID_ARG_TYPE]: The "url" argument must be of type string. Received an instance of Object
+//This route has an auth issue with api keys.
+// app.post("/", async (accessToken) => {
   
-  let headers = `Bearer ${accessToken}`;
-  const url = 'https://api.hubapi.com/crm/v3/objects/contacts';
-  const propUpdate = {
-    "properties": [ {
-      "firstname": "Anothertestname",
-      "lastname": "Anothertestlastname"
-    }
-    ]
-  }
-  const apiCall = `https://api.hubapi.com/contacts/v1/lists/all/contacts/all/?hapikey=${process.env.HUBSPOT_API_KEY}`;
-  try {
-    await axios.post(url, propUpdate);
-    // console.log(propUpdate, url);
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-
-
-// const options = {
-//   method: 'POST',
-//       url: 'https://api.hubapi.com/crm/v3/objects/contacts',
-//    headers: {
-//   accept: 'application/json',
-//  'content-type': 'application/json',
-//     authorization: 'Bearer CNP1kYn2LhIDAQkCGKyuowQg7OqFBijprg4yGQBMNteWebY9uekRIp6GUplQQ8JYJvv0gaQ6HAAKAkEAAAz4A_gLAAAAAQAAAAAAAAAYwAATwAdCGQBMNteWVhYR7qpZ5zlsi10e4uv9fSJwCFo '},
-//     //How to change auth or bearer token so its not expiring
-//   body: {
-//        properties: {
-//       company: "Big",
-// email: 'ooper@Riglytics.net',
-//       firstname: `Wresult`,
-// lastname: 'ooper',
-//        phone: '(3877) 929-0687',
-//       website: 'iglytics.net'
-//    }
-//     },
-//   json: true
-// };
-
-// request(options, function (error, response, body) {
-//   if (error) throw new Error(error);
-
-//   console.log(body);
+//   const propUpdate = {
+//     "properties": [ {
+//       "firstname": "Anothertestname",
+//       "lastname": "Anothertestlastname"
+//     }
+//     ]
+//   }
+//   const apiCall = 'https://api.hubapi.com/crm/v3/objects/contacts/?hapikey=${process.env.API_KEY}';
+//   try {
+//     let headers = {
+//       Authorization: `Bearer ${accessToken}`,
+//       'Content-Type': 'application/json'
+//     };
+//     await axios.post(headers, apiCall, propUpdate);
+//     // console.log(propUpdate, url);
+//   } catch (error) {
+//     console.error(error);
+//   }   
 // });
-
-
 
 // get deals //
 const getDeal = async (accessToken) => {
@@ -324,22 +298,46 @@ const getPageInfo = async (accessToken) => {
 
       
 
-// app.post("/", async (req, res) => {
-//     try {
-//   let (result).data[0];
-      
-//       if (
-//         email === null
-//       ) {
-//         return res.status(400).send("Bad Request - missing parameter/s THIS AINT WORKING");
-//       }
-  
-//       res.status(201).json("OK - Hubspot was updated");
-//     } catch (error) {
-//       console.log(error);
-//       return res.status(500).send("GREAT error").end();
-//     }
-//   });
+app.post("/vendwebhook", async (req, res) => {
+    try {
+       const webhook = req.body;
+  console.log(webhook);
+//   const body = {
+//     properties: {
+//    company: webhook.root.payload.outlet.name,
+// }} 
+const options = {
+  method: 'POST',
+      url: `https://api.hubapi.com/crm/v3/objects/contacts?hapikey=${HUBSPOT_API_KEY}`,
+   headers: {
+  accept: 'application/json',
+ 'content-type': 'application/json',
+     },
+    //How to change auth or bearer token so its not expiring
+  body: {
+       properties: {
+        company: webhook.root.payload.outlet.name,
+email: 'aZZzooper@Riglytics.net',
+      firstname: webhook.root.payload.outlet.name,
+lastname: webhook.root.payload.outlet.name,
+       phone: '(331377) 929-0687',
+      website: '3eweiglzytics.net'
+   }
+    },
+  json: true
+};
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+      res.status(201).json("OK - Hubspot was updated");
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send("GREAT error").end();
+    }
+  });
 
 
 
