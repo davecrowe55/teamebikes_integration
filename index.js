@@ -200,32 +200,6 @@ const getContact = async (accessToken) => {
     return JSON.parse(e.response.body);
   }
 };
-//post route
-//Error: Request failed with status code 400 with ${process.env.HUBSPOT.API_KEY}
-//Error: Request failed with status code 401 with ${process.env.API_KEY} - The API key used to make this call is expired.
-// TypeError [ERR_INVALID_ARG_TYPE]: The "url" argument must be of type string. Received an instance of Object
-//This route has an auth issue with api keys.
-// app.post("/", async (accessToken) => {
-  
-//   const propUpdate = {
-//     "properties": [ {
-//       "firstname": "Anothertestname",
-//       "lastname": "Anothertestlastname"
-//     }
-//     ]
-//   }
-//   const apiCall = 'https://api.hubapi.com/crm/v3/objects/contacts/?hapikey=${process.env.API_KEY}';
-//   try {
-//     let headers = {
-//       Authorization: `Bearer ${accessToken}`,
-//       'Content-Type': 'application/json'
-//     };
-//     await axios.post(headers, apiCall, propUpdate);
-//     // console.log(propUpdate, url);
-//   } catch (error) {
-//     console.error(error);
-//   }   
-// });
 
 // get deals //
 const getDeal = async (accessToken) => {
@@ -248,26 +222,6 @@ const getDeal = async (accessToken) => {
   }
 };
 
-// //get hub db table
-// const getHubdb = async (accessToken) => {
-//   console.log('');
-//   console.log('=== Retrieving deals from HubSpot using the access token ===');
-//   try {
-//     let headers = {
-//       Authorization: `Bearer ${accessToken}`,
-//       'Content-Type': 'application/json'
-//     };
-//     console.log('===> request.get(\'https://api.hubapi.com/cms/v3/hubdb/tables?)');
-//     let result = await request.get('https://api.hubapi.com/cms/v3/hubdb/tables?', {
-//       headers: headers
-//     });
-//     return JSON.parse(result).results[0];
-    
-//   } catch (e) {
-//     console.error('  > Unable to retrieve deals');
-//     return JSON.parse(e.response.body);
-//   }
-// };
 
 
 // get vend web hook payload
@@ -291,21 +245,11 @@ const getPageInfo = async (accessToken) => {
   }
 };
 
-  
-
-// TEST POST ROUTE
-
-
-      
-
-app.post("/vendwebhook", async (req, res) => {
+//POST ROUTE conacts
+app.post("/vendwebhook/contacts", async (req, res) => {
     try {
        const webhook = req.body;
   console.log(webhook);
-//   const body = {
-//     properties: {
-//    company: webhook.root.payload.outlet.name,
-// }} 
 const options = {
   method: 'POST',
       url: `https://api.hubapi.com/crm/v3/objects/contacts?hapikey=${HUBSPOT_API_KEY}`,
@@ -313,15 +257,50 @@ const options = {
   accept: 'application/json',
  'content-type': 'application/json',
      },
-    //How to change auth or bearer token so its not expiring
   body: {
-       properties: {
-        company: webhook.root.payload.outlet.name,
-email: 'aZZzooper@Riglytics.net',
-      firstname: webhook.root.payload.outlet.name,
-lastname: webhook.root.payload.outlet.name,
-       phone: '(331377) 929-0687',
-      website: '3eweiglzytics.net'
+       properties: {  
+
+email: webhook.email,
+firstname: webhook.first_name,
+lastname: webhook.last_name,
+phone: webhook.phone  
+   }
+    },
+  json: true
+};
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+      res.status(201).json("OK - Hubspot was updated");
+    } catch (error) {
+      console.log(error);
+      return res.status(500).send("GREAT error").end();
+    }
+  });
+
+  //POST DEALS
+  app.post("/vendwebhook/deals", async (req, res) => {
+    try {
+       const webhook = req.body;
+  console.log(webhook);
+const options = {
+  method: 'POST',
+      url: `https://api.hubapi.com/crm/v3/objects/deals?hapikey=${HUBSPOT_API_KEY}`,
+   headers: {
+  accept: 'application/json',
+ 'content-type': 'application/json',
+     },
+  body: {
+       properties: {  
+
+        amount: webhook.totals.total_payment,
+        // dealowner: webhook.user.display_name,//DEALOWNER PROPERTY DOESN'T EXIST?
+         dealname: webhook.user.display_name,
+         dealstage: webhook.status,
+        
    }
     },
   json: true
@@ -365,24 +344,13 @@ const displayDeal = (res, deal) => {
   console.log(deal.properties);
   res.write(`<p>Deal information: ${dealname} ${amount} </p>`);
 };
-// //Display hubdb
-// const displayHubdb = (res, db) => {
-//   if (db.status === 'error') {
-//     res.write(`<p>Unable to retrieve the deals! Error Message: ${db.message}</p>`);
-//     return;
-//   }
-  
-//   console.log(db);
-//   res.write(`<p>db information: ${db}  </p>`);
-// };
+
 // Display payLoad
 const displayPageInfo = (res, data) => {
-    //  console.log(data);
   if (data.status === 'error') {
     res.write(`<p>Unable to retrieve the deals! Error Message: ${data.message}</p>`);
     return;
   }
-    // const { id } = data.properties;
    console.log(data);
   res.write(`<p>pageinfo information: ${ data }  </p>`);
 };
@@ -391,18 +359,14 @@ const displayPageInfo = (res, data) => {
 app.get('/', async (req, res) => {
   res.setHeader('Content-Type', 'text/html');
   res.write(`<h2>Another test DAVID'S BIGTEST testHubSpot OAuth 2.0 Quickstart App  `);
-  res.write(`<button onClick="handleSignIn()">LOGIN11 </button> , <input type="button" onclick="location.href='https://google.com';" value="Go to Google" />`);
- 
   if (isAuthorized(req.sessionID)) {
     const accessToken = await getAccessToken(req.sessionID);
     const contact = await getContact(accessToken);
     const deal = await getDeal(accessToken);
-    // const db = await getHubdb(accessToken); //Auth issues doesn't allow public api display?
-    const pageInfor = await getPageInfo(accessToken); //Auth issues coming from pipedream, different auth, when coming straight from webhook should work???
+    const pageInfor = await getPageInfo(accessToken); //Auth issues from pipedream, different auth.
     res.write(`<h4>Access token: ${accessToken}</h4>`);
     displayContactName(res, contact);
     displayDeal(res, deal);
-    // displayHubdb(res, db);
     displayPageInfo(res, pageInfor);
   } else {
     res.write(`<a href="/install"><h3>Install the app</h3></a>`);
