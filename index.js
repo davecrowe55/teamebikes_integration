@@ -317,38 +317,38 @@ request(options, function (error, response, body) {
   });
 
   // POST LINE-ITEMS
-  app.post("/vendwebhook/lineitems", async (req, res) => {
-    try {
-       const webhook = req.body;
-  console.log(webhook);
-const options = {
-  method: 'POST',
-      url: `https://api.hubapi.com/crm/v3/objects/line_items?hapikey=${HUBSPOT_API_KEY}`,
-   headers: {
-  accept: 'application/json',
- 'content-type': 'application/json',
-     },
-  body: {
-       properties: { 
-        hs_product_id: '1' ,//Returning message: 'Associated product id 1 does not exist' ERROR
-        name: webhook.product.base_name,
-        sku: webhook.product.sku
-   }
-    },
-  json: true
-};
+//   app.post("/vendwebhook/lineitems", async (req, res) => {
+//     try {
+//        const webhook = req.body;
+//   console.log(webhook);
+// const options = {
+//   method: 'POST',
+//       url: `https://api.hubapi.com/crm/v3/objects/line_items?hapikey=${HUBSPOT_API_KEY}`,
+//    headers: {
+//   accept: 'application/json',
+//  'content-type': 'application/json',
+//      },
+//   body: {
+//        properties: { 
+//         hs_product_id: '1' ,//Returning message: 'Associated product id 1 does not exist' ERROR
+//         name: webhook.product.base_name,
+//         sku: webhook.product.sku
+//    }
+//     },
+//   json: true
+// };
 
-request(options, function (error, response, body) {
-  if (error) throw new Error(error);
+// request(options, function (error, response, body) {
+//   if (error) throw new Error(error);
 
-  console.log(body);
-});
-      res.status(201).json("OK - Hubspot was updated");
-    } catch (error) {
-      console.log(error);
-      return res.status(500).send("GREAT error").end();
-    }
-  });
+//   console.log(body);
+// });
+//       res.status(201).json("OK - Hubspot was updated");
+//     } catch (error) {
+//       console.log(error);
+//       return res.status(500).send("GREAT error").end();
+//     }
+//   });
 
 
 
